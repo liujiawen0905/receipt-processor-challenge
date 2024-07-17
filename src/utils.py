@@ -42,9 +42,13 @@ def validate_receipt(receipt):
 
     if not isinstance(retailer, str) or not re.match(r'^[\w\s\-&]+$', retailer):
         validation_errors.append("Invalid retailer")
-    if not isinstance(purchaseDate, str) or not re.match(r'^\d{4}-\d{2}-\d{2}$', purchaseDate):
+    try:
+        datetime.strptime(purchaseDate, '%Y-%m-%d')
+    except ValueError:
         validation_errors.append("Invalid purchase date")
-    if not isinstance(purchaseTime, str) or not re.match(r'^\d{2}:\d{2}$', purchaseTime):
+    try:
+        datetime.strptime(purchaseTime, '%H:%M')
+    except ValueError:
         validation_errors.append("Invalid purchase time")
     if not isinstance(total, str) or not re.match(r'^\d+\.\d{2}$', total):
         validation_errors.append("Invalid total")
