@@ -32,6 +32,10 @@ def process_receipt():
 
 @app.route('/receipts/<id>/points', methods=['GET'])
 def get_points(id):
+    '''
+    Endpoint to retrieve the points awarded for a receipt by its ID.
+    Return JSON object containing the points awarded or an error message if the receipt is not found
+    '''
     points = receipts_map.get(id)
     if not points:
         return jsonify({"error": "No receipt found for that id"}), 404 
