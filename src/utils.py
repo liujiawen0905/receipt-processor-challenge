@@ -2,12 +2,13 @@ import re
 import math
 from datetime import datetime
 
-def is_all_items_valid(items):
+def is_all_items_valid(items, total):
     """
     Check if items data in a receipt is valid
     Return True if all items are valid based on requirements, otherwise Flase
     """
 
+    accumulated_price = 0
     for item in items:
         if not isinstance(item, dict):
             return False
@@ -21,6 +22,9 @@ def is_all_items_valid(items):
             return False
         if not isinstance(price, str) or not re.match(r'^\d+\.\d{2}$', price):
             return False
+        accumulated_price += float(price)
+    if accumulated_price != float(total):
+        return False
     return True
 
 def validate_receipt(receipt):
@@ -52,7 +56,7 @@ def validate_receipt(receipt):
         validation_errors.append("Invalid purchase time")
     if not isinstance(total, str) or not re.match(r'^\d+\.\d{2}$', total):
         validation_errors.append("Invalid total")
-    if not isinstance(items, list) or len(items) == 0 or not is_all_items_valid(items):
+    if not isinstance(items, list) or len(items) == 0 or not is_all_items_valid(items, total):
         validation_errors.append("Invalid items")
     
     isValid = len(validation_errors) == 0
