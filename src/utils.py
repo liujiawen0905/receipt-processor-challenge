@@ -1,6 +1,7 @@
 import re
 import math
 from datetime import datetime
+from decimal import Decimal
 
 def is_all_items_valid(items, total):
     """
@@ -8,7 +9,7 @@ def is_all_items_valid(items, total):
     Return True if all items are valid based on requirements, otherwise Flase
     """
 
-    accumulated_price = 0
+    accumulated_price = Decimal('0.0')
     for item in items:
         if not isinstance(item, dict):
             return False
@@ -22,8 +23,9 @@ def is_all_items_valid(items, total):
             return False
         if not isinstance(price, str) or not re.match(r'^\d+\.\d{2}$', price):
             return False
-        accumulated_price += float(price)
-    if accumulated_price != float(total):
+        accumulated_price += Decimal(price)
+        
+    if float(accumulated_price) != float(total):
         return False
     return True
 
